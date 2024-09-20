@@ -1,9 +1,11 @@
 class MatchPattern {
-    version: '0.1';
+    constructor (...hosts) {
+        this.add(...hosts);
+    }
+    version = '0.1';
     cache = {};
     list = [];
     result = {};
-    matchpattern = /!/;
     tlds = {
         'aero': true,
         'app': true,
@@ -53,7 +55,6 @@ class MatchPattern {
             let rule = this.make(host);
             this.cache[host] = rule;
             this.list.push(rule);
-            console.log(rule);
         });
         this.regexp();
     }

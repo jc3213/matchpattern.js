@@ -1,12 +1,5 @@
-class MatchPattern {
-    constructor (...hosts) {
-        this.add(...hosts);
-    }
-    version = '0.1';
-    cache = {};
-    list = [];
-    result = {};
-    tlds = {
+(() => {
+    const tlds = {
         'aero': true,
         'app': true,
         'arpa': true,
@@ -43,36 +36,44 @@ class MatchPattern {
         'xxx': true,
         'xyz': true
     };
-    make (host) {
-        if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) { return host.replace(/\d+\.\d+$/, '*'); }
-        let [full, sbd, sld, tld] = host.match(/(?:([^\.]+)\.)?([^\.]+)\.([^\.]+)$/);
-        if (!sbd || !this.tlds[sld]) { return '*.' + sld + '.' + tld; }
+
+    const caches = {};
+
+    const make = (host) => {
+        if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
+            return host.replace(/\d+\.\d+$/, '*');
+        }
+
+        const [hostname, sbd, sld, tld] = host.match(/(?:([^\.]+)\.)?([^\.]+)\.([^\.]+)$/);
+
+        if (!sbd || !tlds[sld]) {
+            return '*.' + sld + '.' + tld;
+        }
+
         return '*.' + sbd + '.' + sld + '.' + tld;
-    }
-    add (...hosts) {
-        hosts.flat().forEach((host) => {
-            if (this.cache[host]) { return; }
-            let rule = this.make(host);
-            this.cache[host] = rule;
-            this.list.push(rule);
-        });
-        this.regexp();
-    }
-    remove (...hosts) {
-        hosts.flat().forEach((host) => {
-            let rule = this.cache[host];
-            if (!rule) { return; }
-            this.list.splice(this.list.indexOf(rule), 1);
-            delete this.cache[host];
-        });
-        this.regexp();
-    }
-    regexp () {
-        let trim = [...new Set(this.list)];
-        this.matchpattern = this.list.length === 0 ? /!/ : new RegExp('^(' + trim.join('|').replace(/\./g, '\\.').replace(/\\?\.?\*\\?\.?/g, '.*') + ')$');
-        this.result = {};
-    }
-    match (host) {
-        return this.result[host] ??= this.matchpattern.test(host);
-    }
-}
+    };
+    
+    self.MatchPattern = (string) => {
+        if (caches[string]) {
+            return caches[string];
+        }
+
+        const test = string.match(/^(?:http|ftp|ws)?s?:?(?:\/\/)?((?:[^\./:]+\.)+[^\./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
+
+        if (!test) {
+            throw new Error ('"' + string + '" is either not a URL, or a valid MatchPattern');
+        }
+
+        const host = test[1];
+        
+        if (caches[host]) {
+            return caches[string] = caches[host];
+        }
+
+        if (host.includes('*')) {
+            return caches[string] = host;
+        }
+
+        return caches[string] = make(host);
+    };
+})();

@@ -36,12 +36,12 @@ let { regexp, string } = MatchPattern.generate( [ patternA, patternB, ..., patte
 ```
 - regexp
     - `Regular Expression`
-    - /^(patternA|patternB|...|patternZ)$/i
+    - `/^(patternA|patternB|...|patternZ)$/i`
 - string
     - `string`
-    - ^(patternA|patternB|...|patternZ)$
+    - `^(patternA|patternB|...|patternZ)$`
 - pattern
     - `string`
-    - *.some.host
-    - 192.168.*
+    - `*.some.host`
+    - `192.168.*`
     - Don't support ipv6 though

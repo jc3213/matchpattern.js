@@ -1,4 +1,6 @@
 (() => {
+    const version = 0.2;
+
     const tlds = {
         'aero': true,
         'app': true,
@@ -83,5 +85,5 @@
         return { regexp: new RegExp(string), string } ;
     };
 
-    self.MatchPattern = { create, generate };
+    self.MatchPattern = { create, generate, version };
 })();

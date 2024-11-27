@@ -13,10 +13,14 @@
 // @require https://jc3213.github.io/matchpattern.js/matchpattern.js
 ```
 
-## Syntax
+## Method
+- [create](#create)
+- [generate](#generate)
+
+### create
 ```javascript
-let pA = MatchPattern(url);
-let pB = MatchPattern(host);
+let patA = MatchPattern.create(url);
+let patB = MatchPattern.create(host);
 ```
 - url
     - `string`

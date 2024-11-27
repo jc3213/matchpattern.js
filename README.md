@@ -19,12 +19,29 @@
 
 ### create
 ```javascript
-let patA = MatchPattern.create(url);
-let patB = MatchPattern.create(host);
+let pattern = MatchPattern.create("www.example.com"); // *.example.com
 ```
+- pattern
+   - Result, `string`
+   - `*.example.com`
 - url
     - `string`
-    - `https://example.com/pathname`
-- host
+    - `https://www.example.com/pathname`
+    - `www.example.com`
+    - `*.example.com`
+
+### generate
+```javascript
+let { regexp, string } = MatchPattern.generate( [ patternA, patternB, ..., patternZ ] );
+```
+- regexp
+    - `Regular Expression`
+    - /^(patternA|patternB|...|patternZ)$/i
+- string
     - `string`
-    - `example.com`
+    - ^(patternA|patternB|...|patternZ)$
+- pattern
+    - `string`
+    - *.some.host
+    - 192.168.*
+    - Don't support ipv6 though

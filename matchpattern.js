@@ -80,6 +80,10 @@
             return { regexp: /!/, string: '' };
         }
 
+        if (array.includes('<all-urls>')) {
+            return { regexp: /.*/, string: '.*' };
+        }
+
         const string = '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*/g, '.*').replace(/\.\*\\\./g, '([^.]+\\.)*').replace(/\\\.\.\*/g, '(\\.[^.]+)*') + ')$';
 
         return { regexp: new RegExp(string), string } ;

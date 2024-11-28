@@ -39,7 +39,7 @@ let pattern = MatchPattern.create("www.example.com"); // *.example.com
 
 | Match Pattern | Target Hostname |
 | :-: | :-: |
-| * | All hostnames |
+| \<all-urls\> | All hostnames |
 | www.university.org.eu <br> \*.university.org.eu <br> \*.org.eu | www.university.org.eu |
 | doc.university.org.eu <br> doc.university.org.* <br> doc.university.* | doc.university.org.eu |
 | 192.168.1.\* <br> 192.168.\* <br> 192.\* | 192.168.1.1 |

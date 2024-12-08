@@ -71,23 +71,31 @@
         return caches[string] = '*.' + sbd + '.' + sld + '.' + tld;
     };
 
-    const generate = (array) => {
+    const stringify = (array) {
         if (!Array.isArray(array)) {
             throw new Error('"' + array + '" must be an array of MatchPatterns');
         }
 
         if (array.length === 0) {
-            return { regexp: /!/, string: '' };
+            return string: '!';
         }
 
         if (array.includes('<all-urls>')) {
-            return { regexp: /.*/, string: '.*' };
+            return string: '.*';
         }
 
-        const string = '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*/g, '.*').replace(/\.\*\\\./g, '([^.]+\\.)*').replace(/\\\.\.\*/g, '(\\.[^.]+)*') + ')$';
+        return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*/g, '.*').replace(/\.\*\\\./g, '([^.]+\\.)*').replace(/\\\.\.\*/g, '(\\.[^.]+)*') + ')$';
+    };
 
+    const regexp = (array) {
+        const string = stringify(array);
+        return new RegExp(string);
+    };
+
+    const generate = (array) => {
+        const string = stringify(array);
         return { regexp: new RegExp(string), string } ;
     };
 
-    self.MatchPattern = { create, generate, version };
+    self.MatchPattern = { create, regexp, generate, version };
 })();

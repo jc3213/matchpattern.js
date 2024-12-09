@@ -71,23 +71,23 @@
         return caches[string] = '*.' + sbd + '.' + sld + '.' + tld;
     };
 
-    const stringify = (array) {
+    const stringify = (array) => {
         if (!Array.isArray(array)) {
             throw new Error('"' + array + '" must be an array of MatchPatterns');
         }
 
         if (array.length === 0) {
-            return string: '!';
+            return '!';
         }
 
         if (array.includes('<all-urls>')) {
-            return string: '.*';
+            return '.*';
         }
 
         return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*/g, '.*').replace(/\.\*\\\./g, '([^.]+\\.)*').replace(/\\\.\.\*/g, '(\\.[^.]+)*') + ')$';
     };
 
-    const regexp = (array) {
+    const regexp = (array) => {
         const string = stringify(array);
         return new RegExp(string);
     };

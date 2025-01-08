@@ -1,5 +1,5 @@
 (() => {
-    const version = 0.2;
+    const version = '0.3';
 
     const tlds = {
         'aero': true,
@@ -46,7 +46,7 @@
             return caches[string];
         }
 
-        const test = string.match(/^(?:http|ftp|ws)?s?:?(?:\/\/)?((?:[^\./:]+\.)+[^\./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
+        const test = string.match(/^(?:https?|ftps?|wss?)?:?(?:\/\/)?((?:[^\./:]+\.)+[^\./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
 
         if (!test) {
             throw new Error('"' + string + '" is either not a URL, or a valid MatchPattern');

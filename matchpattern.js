@@ -1,5 +1,5 @@
 (() => {
-    const version = '0.4';
+    const version = '0.3';
 
     const tlds = {
         'aero': true,
@@ -80,11 +80,11 @@
             return '!';
         }
 
-        if (array.includes('<all-urls>')) {
+        if (array.includes('<all-urls>') || array.includes('.*')) {
             return '.*';
         }
 
-        return '^(' + array.join('|').replace(/(\*\.|\.\*|\.|\*)/g, (match) => match === '*.' ? '([^.]+\\.)*' : match === '.*' ? '(\\.[^.]+)*' : match === '*' ? '.*' : '\\.') + ')$';
+        return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
     };
 
     const regexp = (array) => {

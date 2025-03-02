@@ -1,5 +1,5 @@
 (() => {
-    const version = '0.3';
+    const version = '0.4';
 
     const tlds = {
         'aero': true,
@@ -84,7 +84,7 @@
             return '.*';
         }
 
-        return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*/g, '.*').replace(/\.\*\\\./g, '([^.]+\\.)*').replace(/\\\.\.\*/g, '(\\.[^.]+)*') + ')$';
+        return '^(' + array.join('|').replace(/(\*\.|\.\*|\.|\*)/g, (match) => match === '*.' ? '([^.]+\\.)*' : match === '.*' ? '(\\.[^.]+)*' : match === '*' ? '.*' : '\\.') + ')$';
     };
 
     const regexp = (array) => {

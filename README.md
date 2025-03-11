@@ -13,23 +13,55 @@
 // @require https://jc3213.github.io/matchpattern.js/matchpattern.js
 ```
 
-## Method
-- [create](#create)
-- [generate](#generate)
-
-### create
+## Syntax
 ```javascript
-let pattern = MatchPattern.create("www.example.com"); // *.example.com
+let match = new MatchPattern();
+match.proxy = 'SOCKS 127.0.0.1:1080';
 ```
-- [pattern](#pattern)
-    - `string`
-- url
-    - `string`
-    - `https://www.example.com/pathname`
-    - `www.example.com`
-    - `*.example.com`
 
-#### pattern
+## Method
+- [add](#add)
+- [remove](#remove)
+- [clear](#clear)
+- [make](#make)
+- [merge](#merge)
+- [purge](#purge)
+
+### add
+```javascript
+match.add("www.example.com"); // *.example.com
+```
+
+### remove
+```javascript
+match.remove('*.example.com');
+```
+
+### clear
+```javascript
+match.clear();
+```
+
+### make
+```javascript
+let result = MatchPattern.make('www.microsoft.com'); // *.microsoft.com
+```
+
+### merge
+```javascript
+let merged = MatchPattern.merge();
+let regexp = merged.regexp;
+let pac_script = merged.pac_script;
+```
+
+### purge
+```javascript
+MatchPattern.purge('SOCKS 127.0.0.1:1080');
+MatchPattern.purge('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');
+MatchPattern.purge( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
+```
+
+## matchpattern
 - `*.example.com`
    - Matches `www.example.com`, `example.com`
    - Doesn't Match `test-example.com`, `www.example.com.cn`
@@ -43,19 +75,3 @@ let pattern = MatchPattern.create("www.example.com"); // *.example.com
 | www.university.org.eu <br> \*.university.org.eu <br> \*.org.eu | www.university.org.eu |
 | doc.university.org.eu <br> doc.university.org.* <br> doc.university.* | doc.university.org.eu |
 | 192.168.1.\* <br> 192.168.\* <br> 192.\* | 192.168.1.1 |
-
-### generate
-```javascript
-let { regexp, string } = MatchPattern.generate( [ patternA, patternB, ..., patternZ ] );
-```
-- [regexp](#regexp)
-    - `Regular Expression`
-    - `/^(patternA|patternB|...|patternZ)$/i`
-- string
-    - `string`
-    - `^(patternA|patternB|...|patternZ)$`
-- pattern
-    - `string`
-    - `*.some.host`
-    - `192.168.*`
-    - Don't support ipv6 though

@@ -61,7 +61,7 @@ MatchPattern.erase('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');
 MatchPattern.erase( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
 ```
 
-## matchpattern
+## MatchPattern
 - `*.example.com`
    - Matches `www.example.com`, `example.com`
    - Doesn't Match `test-example.com`, `www.example.com.cn`

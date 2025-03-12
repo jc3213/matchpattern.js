@@ -25,7 +25,7 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 - [clear](#clear)
 - [make](#make)
 - [merge](#merge)
-- [purge](#purge)
+- [erase](#erase)
 
 ### add
 ```javascript
@@ -54,7 +54,7 @@ let regexp = merged.regexp;
 let pac_script = merged.pac_script;
 ```
 
-### purge
+### erase
 ```javascript
 MatchPattern.purge('SOCKS 127.0.0.1:1080');
 MatchPattern.purge('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');

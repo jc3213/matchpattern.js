@@ -56,9 +56,9 @@ let pac_script = merged.pac_script;
 
 ### erase
 ```javascript
-MatchPattern.purge('SOCKS 127.0.0.1:1080');
-MatchPattern.purge('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');
-MatchPattern.purge( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
+MatchPattern.erase('SOCKS 127.0.0.1:1080');
+MatchPattern.erase('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');
+MatchPattern.erase( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
 ```
 
 ## matchpattern

@@ -7,9 +7,8 @@ class MatchPattern {
     version = '0.5';
     add (...args) {
         args.flat().forEach((arg) => {
-            let result = MatchPattern.make(arg);
-            if (!this.data.includes(result)) {
-                this.data.push(result);
+            if (!this.data.includes(arg)) {
+                this.data.push(arg);
             }
         });
         this.text = MatchPattern.stringnify(this.data);

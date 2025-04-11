@@ -2,24 +2,21 @@ class MatchPattern {
     constructor () {
         this.proxy = 'DIRECT';
         this.clear();
-        MatchPattern.instances.add(this);
+        MatchPattern.instances.push(this);
     }
     version = '0.6';
     add (...args) {
         args.flat().forEach((arg) => this.data.add(MatchPattern.make(arg)));
-        this.list = [...this.data];
         this.text = MatchPattern.stringnify(this.data);
         this.regexp = new RegExp(this.text);
     }
     remove (...args) {
         args.flat().forEach((arg) => this.data.delete(arg));
-        this.list = [...this.data];
         this.text = MatchPattern.stringnify(this.data);
         this.regexp = new RegExp(this.text);
     }
     clear () {
         this.data = new Set();
-        this.list = [];
         this.text = '';
         this.regexp = /!/;
     }
@@ -30,7 +27,7 @@ class MatchPattern {
         let result = this.text && /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+:\d+$/.test(this.proxy) ? '    if (/' + this.text + '/i.test(host)) {\n        return "' + this.proxy + '";\n    }\n' : '';
         return 'function FindProxyForURL(url, host) {\n' + result + '    return "DIRECT";\n}';
     }
-    static instances = new Set();
+    static instances = [];
     static caches = {};
     static tlds = {
         'aero': true,
@@ -99,7 +96,8 @@ class MatchPattern {
         return '^(' + [...set].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
     }
     static erase (...args) {
-        args.flat().forEach((instance) => MatchPattern.instances.delete(instance));
+        let removed = new Set(args.flat());
+        MatchPattern.instances = MatchPattern.instances.filter((instance) => !removed.has(instance.proxy));
     }
     static merge () {
         let text = [];

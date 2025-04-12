@@ -9,18 +9,15 @@ class MatchPattern {
     proxy = 'DIRECT';
     add (...args) {
         args.flat().forEach((arg) => this.data.add(arg));
-        this.text = MatchPattern.stringnify(this.data);
-        this.regexp = new RegExp(this.text || '!');
+        MatchPattern.stringnify(this);
     }
     remove (...args) {
         args.flat().forEach((arg) => this.data.delete(arg));
-        this.text = MatchPattern.stringnify(this.data);
-        this.regexp = new RegExp(this.text || '!');
+        MatchPattern.stringnify(this);
     }
     clear () {
         this.data.clear();
-        this.text = '';
-        this.regexp = /!/;
+        MatchPattern.stringnify(this);
     }
     test (host) {
         return this.regexp.test(host);
@@ -88,14 +85,10 @@ class MatchPattern {
         let [_, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
         return caches[string] = caches[host] = '*.' + (sbd && tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
     }
-    static stringnify (set) {
-        if (set.size === 0) {
-            return '';
-        }
-        if (set.has('*')) {
-            return '.*';
-        }
-        return '^(' + [...set].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
+    static stringnify (instance) {
+        let {data} = instance;
+        instance.text = data.size === 0 ? '' : data.has('*') ? '.*' : '^(' + [...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
+        instance.regexp = new RegExp(instance.text || '!');
     }
     static erase (...args) {
         let removed = new Set(args.flat());

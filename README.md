@@ -29,7 +29,7 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 
 ### add
 ```javascript
-match.add("www.example.com"); // *.example.com
+match.add("*.example.com"); // *.example.com
 ```
 
 ### remove
@@ -57,7 +57,6 @@ let pac_script = merged.pac_script;
 ### erase
 ```javascript
 MatchPattern.erase('SOCKS 127.0.0.1:1080');
-MatchPattern.erase('SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780');
 MatchPattern.erase( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
 ```
 

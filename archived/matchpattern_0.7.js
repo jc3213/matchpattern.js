@@ -18,7 +18,7 @@ class MatchPattern {
     }
     clear () {
         this.data.clear();
-        this.#text = '';
+        this.#text = this.#pacScript = '';
         this.#regexp = /!/;
     }
     test (host) {

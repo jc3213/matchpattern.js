@@ -10,11 +10,11 @@ class MatchPattern {
     #proxy = 'DIRECT';
     add (arg) {
         [arg].flat().forEach((arg) => this.data.add(arg));
-        MatchPattern.convert(this);
+        MatchPattern.update(this);
     }
     remove (arg) {
         [arg].flat().forEach((arg) => this.data.delete(arg));
-        MatchPattern.convert(this);
+        MatchPattern.update(this);
     }
     clear () {
         this.data.clear();
@@ -79,8 +79,8 @@ class MatchPattern {
         caches.set(host, result);
         return result;
     }
-    static convert (that) {
-        let {data, proxy} = that;
+    static update (that) {
+        let { data } = that;
         that.#text = data.size === 0 ? '' : data.has('*') ? '.*' : '^(' + [...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
         that.#regexp = new RegExp(that.#text || '!');
         MatchPattern.pacScript(that);

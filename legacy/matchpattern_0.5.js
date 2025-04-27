@@ -102,11 +102,11 @@ class MatchPattern {
         }
         return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
     }
-    static erase (...args) {
+    static delete (...args) {
         let proxy = args.flat();
         MatchPattern.instances = MatchPattern.instances.filter((instance) => !proxy.includes(instance.proxy));
     }
-    static merge () {
+    static combine () {
         if (MatchPattern.instances.length === 0) {
             return {regexp: /!/, pac_script: 'function FindProxyForURL(url, host) {\n    return "DIRECT";\n}'};
         }

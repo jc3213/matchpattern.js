@@ -81,5 +81,5 @@
         return 'function FindProxyForURL(url, host) {\n    if (/' + result + '/i.test(host)) {\n        return "' + proxy + '";\n    }\n    return "DIRECT";\n}';
     };
 
-    self.MatchPattern = { make, text, regexp, pac_script };
+    self.MatchPattern = { make, text, regexp, pac_script, version };
 })();

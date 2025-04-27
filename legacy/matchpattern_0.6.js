@@ -9,15 +9,15 @@ class MatchPattern {
     proxy = 'DIRECT';
     add (arg) {
         [arg].flat().forEach((arg) => this.data.add(arg));
-        MatchPattern.convert(this);
+        MatchPattern.update(this);
     }
     remove (arg) {
         [arg].flat().forEach((arg) => this.data.delete(arg));
-        MatchPattern.convert(this);
+        MatchPattern.update(this);
     }
     clear () {
         this.data.clear();
-        MatchPattern.convert(this);
+        MatchPattern.update(this);
     }
     test (host) {
         return this.regexp.test(host);
@@ -89,16 +89,16 @@ class MatchPattern {
         caches.set(host, result);
         return result;
     }
-    static convert (instance) {
+    static update (instance) {
         let {data} = instance;
         instance.text = data.size === 0 ? '' : data.has('*') ? '.*' : '^(' + [...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
         instance.regexp = new RegExp(instance.text || '!');
     }
-    static erase (arg) {
+    static delete (arg) {
         let removed = new Set([arg].flat());
         MatchPattern.instances = MatchPattern.instances.filter((instance) => !removed.has(instance.proxy));
     }
-    static merge () {
+    static combine () {
         let text = [];
         let pac = [];
         MatchPattern.instances.forEach((instance) => {

@@ -15,7 +15,7 @@
 
 ## Syntax
 ```javascript
-let match = new MatchPattern();
+let match = new MatchPattern(); // requires v0.4~
 match.proxy = 'SOCKS 127.0.0.1:1080';
 ```
 

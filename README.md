@@ -2,8 +2,9 @@
 
 ## Usage
 
-### Download
-[Latest](https://jc3213.github.io/matchpattern.js/matchpattern.js)
+| Lastest | Extension |
+| - | - |
+| [matchpattern.js](https://jc3213.github.io/matchpattern.js/matchpattern.js) | [Easy Proxy](https://github.com/jc3213/easy_proxy) |
 
 ### HTML
 ```HTML

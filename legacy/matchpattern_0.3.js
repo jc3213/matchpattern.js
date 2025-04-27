@@ -1,5 +1,5 @@
 (() => {
-    const version = '0.4';
+    const version = '0.3';
 
     const caches = {};
 

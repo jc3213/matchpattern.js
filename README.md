@@ -23,13 +23,15 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 - [add](#add)
 - [remove](#remove)
 - [clear](#clear)
+- [test](#test)
 - [make](#make)
-- [merge](#merge)
-- [erase](#erase)
+- [delete](#delete)
+- [combine](#combine)
 
 ### add
 ```javascript
-match.add("*.example.com"); // *.example.com
+let rule = MatchPattern.make('www.example.com'); // *.example.com
+match.add(rule);
 ```
 
 ### remove
@@ -42,22 +44,28 @@ match.remove('*.example.com');
 match.clear();
 ```
 
+### test
+```javascript
+match.add('*.example.com');
+match.test('test.example.com'); // true;
+```
+
 ### make
 ```javascript
 let result = MatchPattern.make('www.microsoft.com'); // *.microsoft.com
 ```
 
-### merge
+### delete
 ```javascript
-let merged = MatchPattern.merge();
-let regexp = merged.regexp;
-let pac_script = merged.pac_script;
+MatchPattern.delete('SOCKS 127.0.0.1:1080');
+MatchPattern.delete( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
 ```
 
-### erase
+### combine
 ```javascript
-MatchPattern.erase('SOCKS 127.0.0.1:1080');
-MatchPattern.erase( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
+let result = MatchPattern.combine();
+let regexp = result.regexp;
+let pac_script = result.pac_script;
 ```
 
 ## MatchPattern

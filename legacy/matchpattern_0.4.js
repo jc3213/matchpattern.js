@@ -1,6 +1,5 @@
 class MatchPattern {
     constructor () {
-        this.proxy = 'DIRECT';
         this.clear();
     }
     version = '0.4';
@@ -31,8 +30,8 @@ class MatchPattern {
     test (host) {
         return this.regexp.test(host);
     }
-    get pac_script () {
-        return 'function FindProxyForURL(url, host) {\n    if (/' + this.text + '/i.test(host)) {\n        return "' + this.proxy + '";\n    }\n    return "DIRECT";\n}';
+    pac_script (proxy) {
+        return 'function FindProxyForURL(url, host) {\n    if (/' + this.text + '/i.test(host)) {\n        return "' + proxy + '";\n    }\n    return "DIRECT";\n}';
     }
     static caches = {};
     static tlds = {

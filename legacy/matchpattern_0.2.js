@@ -69,5 +69,10 @@
         return array.join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
     };
 
-    self.MatchPattern = { make, text };
+    const regexp = (array) => {
+        let result = text(array);
+        return result ? new RegExp(text) : /!/;
+    };
+
+    self.MatchPattern = { make, text, regexp };
 })();

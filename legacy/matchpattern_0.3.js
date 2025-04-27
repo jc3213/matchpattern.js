@@ -1,4 +1,6 @@
 (() => {
+    const version = '0.4';
+
     const caches = {};
 
     const tlds = {
@@ -44,7 +46,7 @@
         if (result) {
             return result;
         }
-        let test = string.match(/^(?:http|ftp|ws)?s?:(?:\/\/)?((?:[^./:]+\.)+[^./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
+        let test = string.match(/^(?:https?|ftps?|wss?)?:?(?:\/\/)?((?:[^./:]+\.)+[^./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
         if (!test) {
             throw new Error('"' + string + '" is either not a URL, or a valid MatchPattern');
         }
@@ -74,5 +76,10 @@
         return result ? new RegExp(text) : /!/;
     };
 
-    self.MatchPattern = { make, text, regexp };
+    const pac_script = (array, proxy) => {
+        let result = text(array);
+        return 'function FindProxyForURL(url, host) {\n    if (/' + result + '/i.test(host)) {\n        return "' + proxy + '";\n    }\n    return "DIRECT";\n}';
+    };
+
+    self.MatchPattern = { make, text, regexp, pac_script };
 })();

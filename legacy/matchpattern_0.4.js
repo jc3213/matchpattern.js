@@ -1,9 +1,41 @@
-(() => {
-    const version = '0.4';
-
-    const caches = {};
-
-    const tlds = {
+class MatchPattern {
+    constructor () {
+        this.proxy = 'DIRECT';
+        this.clear();
+    }
+    version = '0.4';
+    add (...args) {
+        args.flat().forEach((arg) => {
+            if (!this.data.includes(arg)) {
+                this.data.push(arg);
+            }
+        });
+        this.text = MatchPattern.stringnify(this.data);
+        this.regexp = new RegExp(this.text);
+    }
+    remove (...args) {
+        args.flat().forEach((arg) => {
+            let index = this.data.indexOf(arg);
+            if (index !== -1) {
+                this.data.splice(index, 1);
+            }
+        });
+        this.text = MatchPattern.stringnify(this.data);
+        this.regexp = new RegExp(this.text);
+    }
+    clear () {
+        this.data = [];
+        this.text = '!';
+        this.regexp = /!/;
+    }
+    test (host) {
+        return this.regexp.test(host);
+    }
+    get pac_script () {
+        return 'function FindProxyForURL(url, host) {\n    if (/' + this.text + '/i.test(host)) {\n        return "' + this.proxy + '";\n    }\n    return "DIRECT";\n}';
+    }
+    static caches = {};
+    static tlds = {
         'aero': true,
         'app': true,
         'arpa': true,
@@ -40,9 +72,8 @@
         'xxx': true,
         'xyz': true
     };
-
-    const make = (string) => {
-        let result = caches[string];
+    static make (string) {
+        let result = MatchPattern.caches[string];
         if (result) {
             return result;
         }
@@ -51,35 +82,22 @@
             throw new Error('"' + string + '" is either not a URL, or a valid MatchPattern');
         }
         let host = test[1];
-        if (caches[host]) {
-            return caches[host];
+        if (MatchPattern.caches[host]) {
+            return MatchPattern.caches[string] = host;
         }
         if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
-            return caches[string] = caches[host] = host.replace(/\d+\.\d+$/, '*');
+            return MatchPattern.caches[string] = MatchPattern.caches[host] = host.replace(/\d+\.\d+$/, '*');
         }
         let [_, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
-        return caches[string] = caches[host] = '*.' + (sbd && tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
-    };
-
-    const text = (array) => {
+        return MatchPattern.caches[string] = MatchPattern.caches[host] = '*.' + (sbd && MatchPattern.tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
+    }
+    static stringnify (array) {
         if (array.length === 0) {
-            return '';
+            return '!';
         }
-        if (array.includes('*') {
+        if (array.includes('<all-urls>') || array.includes('*')) {
             return '.*';
         }
-        return array.join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
-    };
-
-    const regexp = (array) => {
-        let result = text(array);
-        return result ? new RegExp(text) : /!/;
-    };
-
-    const pac_script = (array, proxy) => {
-        let result = text(array);
-        return 'function FindProxyForURL(url, host) {\n    if (/' + result + '/i.test(host)) {\n        return "' + proxy + '";\n    }\n    return "DIRECT";\n}';
-    };
-
-    self.MatchPattern = { make, text, regexp, pac_script };
-})();
+        return '^(' + array.join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
+    }
+};

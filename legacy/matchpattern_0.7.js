@@ -19,7 +19,7 @@ class MatchPattern {
         return this.#proxy;
     }
     get pas_script () {
-        return 'function FindProxyForURL(url, host) {\n' + this.#pacScript + '\n    return "DIRECT";\n}'
+        return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
     add (arg) {
         [arg].flat().forEach((arg) => this.#data.add(arg));
@@ -60,36 +60,32 @@ class MatchPattern {
     ]);
     static make (url) {
         let { caches, tlds } = MatchPattern;
-        let result = caches.get(url);
-        if (result) {
-            return result;
-        }
         let host = url.match(/^(?:(?:http|ftp|ws)s?:\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
         if (!host) {
-            throw new Error('"' + url + '" is either not a URL, or a valid MatchPattern');
+            throw new Error(`"${url}" is either not a URL, or a MatchPattern`);
         }
-        result = caches.get(host);
-        if (result) {
-            return result;
+        let rule = caches.get(host);
+        if (rule) {
+            return {rule, host};
         }
         if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
-            result = host.replace(/\d+\.\d+$/, '*');
+            rule = host.replace(/\d+\.\d+$/, '*');
         } else {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
-            result = '*.' + (sbd && tlds.has(sld) ? sbd + '.' : '') + sld + '.' + tld;
+            rule = `*.${sbd && tlds.has(sld) ? `${sbd}.` : ''}${sld}.${tld}`;
         }
-        caches.set(url, result);
-        caches.set(host, result);
-        return result;
+        caches.set(url, rule);
+        caches.set(host, rule);
+        return {rule, host};
     }
     static update (that) {
         let data = that.#data;
-        that.#text = data.size === 0 ? '' : data.has('*') ? '.*' : '^(' + [...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
+        that.#text = data.size === 0 ? '' : data.has('*') ? '.*' : `^(${[...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*')})$`;
         that.#regexp = new RegExp(that.#text || '!');
         MatchPattern.pacScript(that);
     }
     static pacScript (that) {
-        that.#pacScript = that.#text && that.#proxy !== 'DIRECT' ? '    if (/' + that.#text + '/i.test(host)) {\n        return "' + that.#proxy + '";\n    }' : ''
+        that.#pacScript = that.#text && that.#proxy !== 'DIRECT' ? `    if (/${that.#text}/i.test(host)) {\n        return "${that.#proxy}";\n    }` : '';
     }
     static delete (arg) {
         let removed = new Set([arg].flat());
@@ -104,8 +100,8 @@ class MatchPattern {
                 pac.push(that.#pacScript);
             }
         });
-        let regexp = text.length === 0 ? /!/ : new RegExp('(' + text.join('|') + ')');
-        let pac_script = 'function FindProxyForURL(url, host) {\n' + pac.join('\n') + '\n    return "DIRECT";\n}';
+        let regexp = text.length === 0 ? /!/ : new RegExp(`(${text.join('|')})`);
+        let pac_script = `function FindProxyForURL(url, host) {\n${pac.join('\n')}\n    return "DIRECT";\n}`;
         return { regexp , pac_script };
     }
 };

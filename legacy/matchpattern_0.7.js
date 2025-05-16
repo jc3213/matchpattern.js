@@ -12,7 +12,7 @@ class MatchPattern {
         return [...this.#data];
     }
     set proxy (proxy) {
-        this.#proxy = /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+:\d+$/.test(proxy) ? proxy : 'DIRECT';
+        this.#proxy = /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+(:\d{2,5})?$/.test(proxy) ? proxy : 'DIRECT';
         MatchPattern.pacScript(this);
     }
     get proxy () {

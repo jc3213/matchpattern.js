@@ -22,7 +22,7 @@ class MatchPattern {
         this.text = MatchPattern.stringnify(this.data);
         this.regexp = new RegExp(this.text);
     }
-    clear () {
+    empty () {
         this.data = [];
         this.text = '!';
         this.regexp = /!/;

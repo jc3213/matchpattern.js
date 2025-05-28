@@ -15,7 +15,7 @@ class MatchPattern {
         [arg].flat().forEach((arg) => this.data.delete(arg));
         MatchPattern.update(this);
     }
-    clear () {
+    empty () {
         this.data.clear();
         MatchPattern.update(this);
     }

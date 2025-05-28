@@ -2,7 +2,7 @@ class MatchPattern {
     constructor () {
         MatchPattern.instances.push(this);
     }
-    version = '0.7';
+    version = '0.8';
     #data = new Set();
     #text = '';
     #regexp = /!/;
@@ -13,7 +13,7 @@ class MatchPattern {
     }
     set proxy (proxy) {
         this.#proxy = /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+(:\d{2,5})?$/.test(proxy) ? proxy : 'DIRECT';
-        MatchPattern.pacScript(this);
+        this.#parser();
     }
     get proxy () {
         return this.#proxy;
@@ -23,11 +23,11 @@ class MatchPattern {
     }
     add (arg) {
         [arg].flat().forEach((arg) => this.#data.add(arg));
-        MatchPattern.update(this);
+        this.#update();
     }
     remove (arg) {
         [arg].flat().forEach((arg) => this.#data.delete(arg));
-        MatchPattern.update(this);
+        this.#update();
     }
     empty () {
         this.#data.clear();
@@ -36,6 +36,15 @@ class MatchPattern {
     }
     test (host) {
         return this.#regexp.test(host);
+    }
+    #update () {
+        let data = this.#data;
+        this.#text = data.size === 0 ? '' : data.has('*') ? '.*' : `^(${[...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*')})$`;
+        this.#regexp = new RegExp(this.#text || '!');
+        this.#parser();
+    }
+    #parser () {
+        this.#pacScript = this.#text && this.#proxy !== 'DIRECT' ? `    if (/${this.#text}/i.test(host)) {\n        return "${this.#proxy}";\n    }` : '';
     }
     static instances = [];
     static caches = new Map();
@@ -60,17 +69,13 @@ class MatchPattern {
     ]);
     static make (url) {
         let { caches, tlds } = MatchPattern;
-        let rule = caches.get(url);
-        if (rule) {
-            return rule;
-        }
         let host = url.match(/^(?:(?:http|ftp|ws)s?:?\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
         if (!host) {
             throw new Error(`"${url}" is either not a URL, or a MatchPattern`);
         }
-        rule = caches.get(host);
+        let rule = caches.get(host);
         if (rule) {
-            return rule;
+            return {rule, host};
         }
         if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
             rule = host.replace(/\d+\.\d+$/, '*');
@@ -80,16 +85,7 @@ class MatchPattern {
         }
         caches.set(url, rule);
         caches.set(host, rule);
-        return rule;
-    }
-    static update (that) {
-        let data = that.#data;
-        that.#text = data.size === 0 ? '' : data.has('*') ? '.*' : `^(${[...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*')})$`;
-        that.#regexp = new RegExp(that.#text || '!');
-        MatchPattern.pacScript(that);
-    }
-    static pacScript (that) {
-        that.#pacScript = that.#text && that.#proxy !== 'DIRECT' ? `    if (/${that.#text}/i.test(host)) {\n        return "${that.#proxy}";\n    }` : '';
+        return {rule, host};
     }
     static delete (arg) {
         let removed = new Set([arg].flat());

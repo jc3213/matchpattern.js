@@ -69,13 +69,17 @@ class MatchPattern {
     ]);
     static make (url) {
         let { caches, tlds } = MatchPattern;
+        let rule = caches.get(url);
+        if (rule) {
+            return rule;
+        }
         let host = url.match(/^(?:(?:http|ftp|ws)s?:?\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
         if (!host) {
             throw new Error(`"${url}" is either not a URL, or a MatchPattern`);
         }
-        let rule = caches.get(host);
+        rule = caches.get(host);
         if (rule) {
-            return {rule, host};
+            return rule;
         }
         if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
             rule = host.replace(/\d+\.\d+$/, '*');
@@ -85,7 +89,7 @@ class MatchPattern {
         }
         caches.set(url, rule);
         caches.set(host, rule);
-        return {rule, host};
+        return rule;
     }
     static delete (arg) {
         let removed = new Set([arg].flat());

@@ -1,6 +1,6 @@
 class MatchPattern {
     constructor () {
-        MatchPattern.instances.push(this);
+        MatchPattern.#instances.push(this);
     }
     version = '0.8';
     #data = new Set();
@@ -46,9 +46,9 @@ class MatchPattern {
     #parser () {
         this.#pacScript = this.#text && this.#proxy !== 'DIRECT' ? `    if (/${this.#text}/i.test(host)) {\n        return "${this.#proxy}";\n    }` : '';
     }
-    static instances = [];
-    static caches = new Map();
-    static tlds = new Set([
+    static #instances = [];
+    static #caches = new Map();
+    static #tlds = new Set([
         'aero', 'app', 'arpa', 'asia',
         'biz',
         'cat', 'co', 'com', 'coop',
@@ -68,7 +68,8 @@ class MatchPattern {
         'xxx', 'xyz'
     ]);
     static make (url) {
-        let { caches, tlds } = MatchPattern;
+        let caches = MatchPattern.#caches;
+        let tlds = MatchPattern.#tlds;
         let rule = caches.get(url);
         if (rule) {
             return rule;
@@ -93,12 +94,12 @@ class MatchPattern {
     }
     static delete (arg) {
         let removed = new Set([arg].flat());
-        MatchPattern.instances = MatchPattern.instances.filter((that) => !removed.has(that.proxy));
+        MatchPattern.#instances = MatchPattern.#instances.filter((that) => !removed.has(that.proxy));
     }
     static combine () {
         let text = [];
         let pac = [];
-        MatchPattern.instances.forEach((that) => {
+        MatchPattern.#instances.forEach((that) => {
             if (that.#text && that.#pacScript) {
                 text.push(that.#text);
                 pac.push(that.#pacScript);

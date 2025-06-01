@@ -108,4 +108,4 @@ class MatchPattern {
         let pac_script = `function FindProxyForURL(url, host) {\n${pac.join('\n')}\n    return "DIRECT";\n}`;
         return { regexp , pac_script };
     }
-};
+}

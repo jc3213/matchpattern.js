@@ -66,17 +66,34 @@ match.add('*.example.com');
 match.test('test.example.com'); // true;
 ```
 
-## Static Method
+## Static Properties
 - [caches](#caches)
+- [storage](#storage)
+
+### caches
+- require `1.0~`
+```javascript
+let { caches } = MatchPattern;
+```
+
+### storage
+- require `1.0~`
+- require [**storage.js**](https://jc3213.github.io/storage.js/)
+```javascript
+let { storage } = MatchPattern;
+```
+
+## Static Method
+- [fetch](#fetch)
 - [make](#make)
 - [delete](#delete)
 - [combine](#combine)
 
-### caches
+### fetch
 - require `0.9~`
 - require [**storage.js**](https://jc3213.github.io/storage.js/)
 ```javascript
-await MatchPattern.caches();
+await MatchPattern.fetch();
 let result = MatchPattern.make('www.example.com'); // *.example.com
 ```
 

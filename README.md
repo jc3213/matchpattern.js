@@ -36,12 +36,9 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 
 ## Method
 - [add](#add)
-- [remove](#remove)
-- [empty](#empty)
-- [test](#test)
-- [make](#make)
 - [delete](#delete)
-- [combine](#combine)
+- [clear](#clear)
+- [test](#test)
 
 ### add
 - require `0.4~`
@@ -50,13 +47,13 @@ let rule = MatchPattern.make('www.example.com'); // *.example.com
 match.add(rule);
 ```
 
-### remove
+### delete
 - require `0.4~`
 ```javascript
-match.remove('*.example.com');
+match.delete('*.example.com');
 ```
 
-### empty
+### clear
 - require `0.4~`
 ```javascript
 match.clear();
@@ -67,6 +64,20 @@ match.clear();
 ```javascript
 match.add('*.example.com');
 match.test('test.example.com'); // true;
+```
+
+## Static Method
+- [caches](#caches)
+- [make](#make)
+- [delete](#delete)
+- [combine](#combine)
+
+### caches
+- require `0.9~`
+- require [**storage.js**](https://jc3213.github.io/storage.js/)
+```javascript
+await MatchPattern.caches();
+let result = MatchPattern.make('www.example.com'); // *.example.com
 ```
 
 ### make

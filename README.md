@@ -29,10 +29,16 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 ### data
 - require `0.4~`
 - read only
+```javascript
+let { data } = match;
+```
 
 ### pac_script
 - require `0.4~`
 - read only
+```javascript
+let { pac_script } = match;
+```
 
 ## Method
 - [add](#add)
@@ -72,6 +78,7 @@ match.test('test.example.com'); // true;
 
 ### caches
 - require `1.0~`
+- **readonly**
 ```javascript
 let { caches } = MatchPattern;
 ```
@@ -79,6 +86,7 @@ let { caches } = MatchPattern;
 ### storage
 - require `1.0~`
 - require [**storage.js**](https://jc3213.github.io/storage.js/)
+- **readonly**
 ```javascript
 let { storage } = MatchPattern;
 ```

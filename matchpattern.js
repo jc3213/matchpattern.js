@@ -2,7 +2,7 @@ class MatchPattern {
     constructor () {
         MatchPattern.#instances.push(this);
     }
-    version = '0.8';
+    version = '0.9';
     #data = new Set();
     #text = '';
     #regexp = /!/;
@@ -46,6 +46,7 @@ class MatchPattern {
     #parser () {
         this.#pacScript = this.#text && this.#proxy !== 'DIRECT' ? `    if (/${this.#text}/i.test(host)) {\n        return "${this.#proxy}";\n    }` : '';
     }
+    static #storage;
     static #instances = [];
     static #caches = new Map();
     static #tlds = new Set([
@@ -67,18 +68,14 @@ class MatchPattern {
         'web',
         'xxx', 'xyz'
     ]);
-    static make (url) {
+    static caches () {
+        MatchPattern.#storage = new Storage('matchpattern', 'caches');
+        return MatchPattern.#storage.forEach(({key, value}) => MatchPattern.#caches.set(key, value));
+    }
+    static make (host) {
         let caches = MatchPattern.#caches;
         let tlds = MatchPattern.#tlds;
-        let rule = caches.get(url);
-        if (rule) {
-            return rule;
-        }
-        let host = url.match(/^(?:(?:http|ftp|ws)s?:?\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
-        if (!host) {
-            throw new Error(`"${url}" is either not a URL, or a MatchPattern`);
-        }
-        rule = caches.get(host);
+        let rule = caches.get(host);
         if (rule) {
             return rule;
         }
@@ -88,7 +85,7 @@ class MatchPattern {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
             rule = sbd && tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
         }
-        caches.set(url, rule);
+        MatchPattern.#storage?.set(host, rule);
         caches.set(host, rule);
         return rule;
     }

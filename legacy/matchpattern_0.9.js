@@ -68,7 +68,7 @@ class MatchPattern {
         'web',
         'xxx', 'xyz'
     ]);
-    static caches () {
+    static fetch () {
         MatchPattern.#storage = new Storage('matchpattern', 'caches');
         return MatchPattern.#storage.forEach(({key, value}) => MatchPattern.#caches.set(key, value));
     }

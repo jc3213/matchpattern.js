@@ -21,12 +21,12 @@ class MatchPattern {
     get pas_script () {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
-    add (args) {
-        Array.isArrary(args) ? args.forEach((arg) => this.#data.add(arg)) : this.#data.add(args);
+    add (arg) {
+        this.#data.add(arg);
         this.#update();
     }
-    delete (args) {
-        [Array.isArrary(args) ? args.forEach((arg) => this.#data.delete(arg)) : this.#data.delete(args);
+    delete (arg) {
+        this.#data.delete(arg);
         this.#update();
     }
     clear () {

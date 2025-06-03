@@ -8,11 +8,11 @@ class MatchPattern {
     regexp = /!/;
     proxy = 'DIRECT';
     add (arg) {
-        [arg].flat().forEach((arg) => this.data.add(arg));
+        this.data.add(arg);
         MatchPattern.update(this);
     }
     delete (arg) {
-        [arg].flat().forEach((arg) => this.data.delete(arg));
+        this.data.delete(arg);
         MatchPattern.update(this);
     }
     clear () {

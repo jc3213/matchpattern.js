@@ -5,24 +5,20 @@ class MatchPattern {
         MatchPattern.instances.push(this);
     }
     version = '0.5';
-    add (...args) {
-        args.flat().forEach((arg) => {
-            if (!this.data.includes(arg)) {
-                this.data.push(arg);
-            }
-        });
-        this.text = MatchPattern.stringnify(this.data);
-        this.regexp = new RegExp(this.text);
+    add (arg) {
+        if (!this.data.includes(arg)) {
+            this.data.push(arg);
+            this.text = MatchPattern.stringnify(this.data);
+            this.regexp = new RegExp(this.text);
+        }
     }
-    delete (...args) {
-        args.flat().forEach((arg) => {
-            let index = this.data.indexOf(arg);
-            if (index !== -1) {
-                this.data.splice(index, 1);
-            }
-        });
-        this.text = MatchPattern.stringnify(this.data);
-        this.regexp = new RegExp(this.text);
+    delete (arg) {
+        let index = this.data.indexOf(arg);
+        if (index !== -1) {
+            this.data.splice(index, 1);
+            this.text = MatchPattern.stringnify(this.data);
+            this.regexp = new RegExp(this.text);
+        }
     }
     clear () {
         this.data = [];

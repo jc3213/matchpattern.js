@@ -12,7 +12,7 @@ class MatchPattern {
         this.text = MatchPattern.stringnify(this.data);
         this.regexp = new RegExp(this.text);
     }
-    remove (...args) {
+    delete (...args) {
         args.flat().forEach((arg) => {
             let index = this.data.indexOf(arg);
             if (index !== -1) {
@@ -22,7 +22,7 @@ class MatchPattern {
         this.text = MatchPattern.stringnify(this.data);
         this.regexp = new RegExp(this.text);
     }
-    empty () {
+    clear () {
         this.data = [];
         this.text = '!';
         this.regexp = /!/;

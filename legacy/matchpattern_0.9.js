@@ -21,15 +21,15 @@ class MatchPattern {
     get pas_script () {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
-    add (arg) {
-        [arg].flat().forEach((arg) => this.#data.add(arg));
+    add (args) {
+        Array.isArrary(args) ? args.forEach((arg) => this.#data.add(arg)) : this.#data.add(args);
         this.#update();
     }
-    remove (arg) {
-        [arg].flat().forEach((arg) => this.#data.delete(arg));
+    delete (args) {
+        [Array.isArrary(args) ? args.forEach((arg) => this.#data.delete(arg)) : this.#data.delete(args);
         this.#update();
     }
-    empty () {
+    clear () {
         this.#data.clear();
         this.#text = this.#pacScript = '';
         this.#regexp = /!/;

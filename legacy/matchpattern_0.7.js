@@ -25,11 +25,11 @@ class MatchPattern {
         [arg].flat().forEach((arg) => this.#data.add(arg));
         MatchPattern.update(this);
     }
-    remove (arg) {
+    delete (arg) {
         [arg].flat().forEach((arg) => this.#data.delete(arg));
         MatchPattern.update(this);
     }
-    empty () {
+    clear () {
         this.#data.clear();
         this.#text = this.#pacScript = '';
         this.#regexp = /!/;

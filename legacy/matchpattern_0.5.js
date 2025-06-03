@@ -6,19 +6,23 @@ class MatchPattern {
     }
     version = '0.5';
     add (arg) {
-        if (!this.data.includes(arg)) {
-            this.data.push(arg);
-            this.text = MatchPattern.stringnify(this.data);
-            this.regexp = new RegExp(this.text);
-        }
+        [arg].flat().forEach((i) => {
+            if (!this.data.includes(i)) {
+                this.data.push(i);
+            }
+        });
+        this.text = MatchPattern.stringnify(this.data);
+        this.regexp = new RegExp(this.text);
     }
     delete (arg) {
-        let index = this.data.indexOf(arg);
-        if (index !== -1) {
-            this.data.splice(index, 1);
-            this.text = MatchPattern.stringnify(this.data);
-            this.regexp = new RegExp(this.text);
-        }
+        [arg].flat().forEach((i) => {
+            let index = this.data.indexOf(i);
+            if (index !== -1) {
+                this.data.splice(index, 1);
+            }
+        });
+        this.text = MatchPattern.stringnify(this.data);
+        this.regexp = new RegExp(this.text);
     }
     clear () {
         this.data = [];

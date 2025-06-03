@@ -18,15 +18,15 @@ class MatchPattern {
     get proxy () {
         return this.#proxy;
     }
-    get pas_script () {
+    get pac_script () {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
     add (arg) {
-        this.#data.add(arg);
+        [arg].flat().forEach((i) => this.#data.add(i));
         this.#update();
     }
     delete (arg) {
-        this.#data.delete(arg);
+        [arg].flat().forEach((i) => this.#data.delete(i));
         this.#update();
     }
     clear () {

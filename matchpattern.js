@@ -22,11 +22,11 @@ class MatchPattern {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
     add (arg) {
-        this.#data.add(arg);
+        Array.isArray(arg) ? arg.forEach((i) => this.#data.add(i)) : this.#data.add(arg);
         this.#update();
     }
     delete (arg) {
-        this.#data.delete(arg);
+        Array.isArray(arg) ? arg.forEach((i) => this.#data.delete(i)) : this.#data.delete(arg);
         this.#update();
     }
     clear () {

@@ -51,7 +51,6 @@ let { pac_script } = match;
 ### add
 - require `0.4~`
 ```javascript
-let rule = MatchPattern.make('www.example.com'); // *.example.com
 match.add(rule);
 ```
 

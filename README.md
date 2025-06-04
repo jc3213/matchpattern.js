@@ -28,16 +28,16 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 
 ### data
 - require `0.4~`
-- read only
 - `array`
+- **read only**
 ```javascript
 let { data } = match;
 ```
 
 ### pac_script
 - require `0.4~`
-- read only
 - `string`
+- **read only**
 ```javascript
 let { pac_script } = match;
 ```

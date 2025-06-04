@@ -3,24 +3,27 @@ class MatchPattern {
         MatchPattern.instances.push(this);
     }
     version = '0.6';
-    data = new Set();
+    dataset = new Set();
     text = '';
     regexp = /!/;
     proxy = 'DIRECT';
     add (arg) {
-        [arg].flat().forEach((i) => this.data.add(i));
+        [arg].flat().forEach((i) => this.dataset.add(i));
         MatchPattern.update(this);
     }
     delete (arg) {
-        [arg].flat().forEach((i) => this.data.delete(i));
+        [arg].flat().forEach((i) => this.dataset.delete(i));
         MatchPattern.update(this);
     }
     clear () {
-        this.data.clear();
+        this.dataset.clear();
         MatchPattern.update(this);
     }
     test (host) {
         return this.regexp.test(host);
+    }
+    get data () {
+        return [...this.dataset];
     }
     get pac_script () {
         let result = this.text && /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+:\d+$/.test(this.proxy) ? '    if (/' + this.text + '/i.test(host)) {\n        return "' + this.proxy + '";\n    }\n' : '';
@@ -90,7 +93,7 @@ class MatchPattern {
         return result;
     }
     static update (instance) {
-        let {data} = instance;
+        let data = instance.dataset;
         instance.text = data.size === 0 ? '' : data.has('*') ? '.*' : '^(' + [...data].join('|').replace(/\./g, '\\.').replace(/\*\\\./g, '([^.]+\\.)*').replace(/\\\.\*/g, '(\\.[^.]+)*') + ')$';
         instance.regexp = new RegExp(instance.text || '!');
     }

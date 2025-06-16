@@ -70,7 +70,6 @@ class MatchPattern {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
             rule = sbd && tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
         }
-        caches.set(url, rule);
         caches.set(host, rule);
         return rule;
     }

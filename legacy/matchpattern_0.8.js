@@ -68,8 +68,7 @@ class MatchPattern {
         'xxx', 'xyz'
     ]);
     static make (host) {
-        let caches = MatchPattern.#caches;
-        let rule = caches.get(host);
+        let rule = MatchPattern.#caches.get(host);
         if (rule) {
             return rule;
         }
@@ -79,8 +78,7 @@ class MatchPattern {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
             rule = sbd && MatchPattern.#tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
         }
-        caches.set(url, rule);
-        caches.set(host, rule);
+        MatchPattern.#caches.set(host, rule);
         return rule;
     }
     static delete (arg) {

@@ -87,8 +87,8 @@ let { caches } = MatchPattern;
 
 ### storage
 - require `1.0~`
-- require [**storage.js**](https://jc3213.github.io/storage.js/)
-- `Storage` instance
+- require [**storagedb.js**](https://jc3213.github.io/storagedb.js/)
+- `StorageDB` instance
 - **readonly**
 ```javascript
 let { storage } = MatchPattern;
@@ -102,7 +102,7 @@ let { storage } = MatchPattern;
 
 ### fetch
 - require `0.9~`
-- require [**storage.js**](https://jc3213.github.io/storage.js/)
+- require [**storagedb.js**](https://jc3213.github.io/storagedb.js/)
 ```javascript
 await MatchPattern.fetch();
 let result = MatchPattern.make('www.example.com'); // *.example.com

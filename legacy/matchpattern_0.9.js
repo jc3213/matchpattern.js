@@ -69,7 +69,7 @@ class MatchPattern {
         'xxx', 'xyz'
     ]);
     static fetch () {
-        MatchPattern.#storage = new Storage('matchpattern', 'caches');
+        MatchPattern.#storage = new StorageDB('matchpattern', 'caches');
         return MatchPattern.#storage.forEach(({key, value}) => MatchPattern.#caches.set(key, value));
     }
     static make (host) {

@@ -74,24 +74,16 @@ class MatchPattern {
         'xxx': true,
         'xyz': true
     };
-    static make (string) {
-        let result = MatchPattern.caches[string];
-        if (result) {
-            return result;
-        }
-        let test = string.match(/^(?:https?|ftps?|wss?)?:?(?:\/\/)?((?:[^./:]+\.)+[^./:]+):?(?:\d+)?\/?(?:[^\/]+\/?)*$/);
-        if (!test) {
-            throw new Error('"' + string + '" is either not a URL, or a valid MatchPattern');
-        }
-        let host = test[1];
+    static make (host) {
+        let result = MatchPattern.caches[host];
         if (MatchPattern.caches[host]) {
-            return MatchPattern.caches[string] = host;
+            return MatchPattern.caches[host];
         }
         if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
-            return MatchPattern.caches[string] = MatchPattern.caches[host] = host.replace(/\d+\.\d+$/, '*');
+            return MatchPattern.caches[host] = host.replace(/\d+\.\d+$/, '*');
         }
         let [_, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
-        return MatchPattern.caches[string] = MatchPattern.caches[host] = '*.' + (sbd && MatchPattern.tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
+        return MatchPattern.caches[host] = '*.' + (sbd && MatchPattern.tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
     }
     static stringnify (array) {
         if (array.length === 0) {

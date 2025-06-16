@@ -68,17 +68,9 @@ class MatchPattern {
         'xxx': true,
         'xyz': true
     };
-    static make (string) {
+    static make (host) {
         let { caches, tlds } = MatchPattern;
-        let result = caches.get(string);
-        if (result) {
-            return result;
-        }
-        let host = string.match(/^(?:(?:http|ftp|ws)s?:\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
-        if (!host) {
-            throw new Error('"' + string + '" is either not a URL, or a valid MatchPattern');
-        }
-        result = caches.get(host);
+        let result = caches.get(host);
         if (result) {
             return result;
         }
@@ -88,7 +80,6 @@ class MatchPattern {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
             result = '*.' + (sbd && tlds[sld] ? sbd + '.' : '') + sld + '.' + tld;
         }
-        caches.set(string, result);
         caches.set(host, result);
         return result;
     }

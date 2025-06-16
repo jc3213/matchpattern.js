@@ -67,17 +67,9 @@ class MatchPattern {
         'web',
         'xxx', 'xyz'
     ]);
-    static make (url) {
+    static make (host) {
         let caches = MatchPattern.#caches;
-        let rule = caches.get(url);
-        if (rule) {
-            return rule;
-        }
-        let host = url.match(/^(?:(?:http|ftp|ws)s?:?\/\/)?(([^./:]+\.)+[^./:]+)(?::\d+)?\/?/)?.[1];
-        if (!host) {
-            throw new Error(`"${url}" is either not a URL, or a MatchPattern`);
-        }
-        rule = caches.get(host);
+        let rule = caches.get(host);
         if (rule) {
             return rule;
         }

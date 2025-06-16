@@ -75,13 +75,11 @@ class MatchPattern {
         return MatchPattern.#storage;
     }
     static fetch () {
-        MatchPattern.#storage = new StorageDB('matchpattern', 'caches');
+        MatchPattern.#storage = new Storage('matchpattern', 'caches');
         return MatchPattern.#storage.forEach(({key, value}) => MatchPattern.#caches.set(key, value));
     }
     static make (host) {
-        let caches = MatchPattern.#caches;
-        let tlds = MatchPattern.#tlds;
-        let rule = caches.get(host);
+        let rule = MatchPattern.#caches.get(host);
         if (rule) {
             return rule;
         }
@@ -89,14 +87,14 @@ class MatchPattern {
             rule = host.replace(/\d+\.\d+$/, '*');
         } else {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
-            rule = sbd && tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
+            rule = sbd && MatchPattern.#tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
         }
         MatchPattern.#storage?.set(host, rule);
-        caches.set(host, rule);
+        MatchPattern.#caches.set(host, rule);
         return rule;
     }
     static delete (arg) {
-        let removed = new Set([arg].flat());
+        let removed = new Set(Array.isArray(arg) ? arg : [arg]);
         MatchPattern.#instances = MatchPattern.#instances.filter((that) => !removed.has(that.proxy));
     }
     static combine () {

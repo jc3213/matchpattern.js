@@ -52,21 +52,19 @@ let { pac_script } = match;
 ### new
 - require `0.4~`
 ```javascript
-match.new(rules: Array);
+match.new(string[]);
 ```
 
 ### add
 - require `0.4~`
 ```javascript
-match.add(rule: String);
-match.add(rules: Array);
+match.add(string | string[]);
 ```
 
 ### delete
 - require `0.4~`
 ```javascript
-match.delete(rule: String);
-match.delete(rules: Array);
+match.delete(string | string[]);
 ```
 
 ### clear
@@ -78,7 +76,7 @@ match.clear();
 ### test
 - require `0.4~`
 ```javascript
-match.test(host: String);
+match.test(string);
 ```
 
 ## Static Properties
@@ -119,14 +117,13 @@ let rule = MatchPattern.make('www.example.com'); // *.example.com
 ### make
 - require `0.2~`
 ```javascript
-let rule = MatchPattern.make(host: String);
+let rule = MatchPattern.make(string);
 ```
 
 ### delete
 - require `0.5~`
 ```javascript
-MatchPattern.delete(proxy: String);
-MatchPattern.delete(proxies: Array );
+MatchPattern.delete(string | string[]);
 ```
 
 ### combine

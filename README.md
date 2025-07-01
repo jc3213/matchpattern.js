@@ -43,21 +43,28 @@ let { pac_script } = match;
 ```
 
 ## Method
+- [new](#new)
 - [add](#add)
 - [delete](#delete)
 - [clear](#clear)
 - [test](#test)
 
+### new
+- require `0.4~`
+```javascript
+match.new(rules: Array);
+```
+
 ### add
 - require `0.4~`
 ```javascript
-match.add(rule);
+match.add(rule: String);
 ```
 
 ### delete
 - require `0.4~`
 ```javascript
-match.delete('*.example.com');
+match.delete(rule: String);
 ```
 
 ### clear
@@ -69,8 +76,7 @@ match.clear();
 ### test
 - require `0.4~`
 ```javascript
-match.add('*.example.com');
-match.test('test.example.com'); // true;
+match.test(host: String);
 ```
 
 ## Static Properties

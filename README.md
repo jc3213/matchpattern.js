@@ -59,12 +59,14 @@ match.new(rules: Array);
 - require `0.4~`
 ```javascript
 match.add(rule: String);
+match.add(rules: Array);
 ```
 
 ### delete
 - require `0.4~`
 ```javascript
 match.delete(rule: String);
+match.delete(rules: Array);
 ```
 
 ### clear
@@ -111,20 +113,20 @@ let { storage } = MatchPattern;
 - require [**storagedb.js**](https://jc3213.github.io/storagedb.js/)
 ```javascript
 await MatchPattern.fetch();
-let result = MatchPattern.make('www.example.com'); // *.example.com
+let rule = MatchPattern.make('www.example.com'); // *.example.com
 ```
 
 ### make
 - require `0.2~`
 ```javascript
-let result = MatchPattern.make('www.microsoft.com'); // *.microsoft.com
+let rule = MatchPattern.make(host: String);
 ```
 
 ### delete
 - require `0.5~`
 ```javascript
-MatchPattern.delete('SOCKS 127.0.0.1:1080');
-MatchPattern.delete( ['SOCKS 127.0.0.1:1080', 'HTTPS 127.0.0.1:6780'] );
+MatchPattern.delete(proxy: String);
+MatchPattern.delete(proxies: Array );
 ```
 
 ### combine

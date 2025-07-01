@@ -18,7 +18,7 @@ class MatchPattern {
     get proxy () {
         return this.#proxy;
     }
-    get pas_script () {
+    get pac_script () {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
     add (arg) {

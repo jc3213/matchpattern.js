@@ -4,7 +4,6 @@ class MatchPattern {
     }
     version = '1.0';
     #data = new Set();
-    #text = '';
     #regexp = /!/;
     #pacScript = '';
     #proxy = 'DIRECT';
@@ -13,7 +12,7 @@ class MatchPattern {
     }
     set proxy (proxy) {
         this.#proxy = /^(SOCKS5?|HTTPS?) ([^.]+\.)+[^.:]+(:\d{2,5})?$/.test(proxy) ? proxy : 'DIRECT';
-        this.#parser();
+        this.#build();
     }
     get proxy () {
         return this.#proxy;
@@ -43,9 +42,9 @@ class MatchPattern {
     }
     #update () {
         this.#regexp = this.#data.size === 0 ? /!/ : this.#data.has('*') ? /.*/ : new RegExp(`(${this.data.map((i) => i.replace(/\./g, '\\.')).join('|')})$`, 'i');;
-        this.#parser();
+        this.#build();
     }
-    #parser () {
+    #build () {
         this.#pacScript = this.#data.size === 0 || this.#proxy === 'DIRECT' ? '' : [...this.#data].map((i) => `    if (dnsDomainIs(host, "${i}")) {\n        return "${this.#proxy}";\n    }`).join('\n');
     }
     static #instances = [];
@@ -77,17 +76,13 @@ class MatchPattern {
         if (rule) {
             return rule;
         }
-        if (/((25[0-5]|(2[0-4]|1[0-9]|[1-9]?)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])/.test(host)) {
-            rule = host.replace(/\d+\.\d+$/, '*');
-        } else {
-            let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
-            rule = sbd && MatchPattern.#tlds.has(sld) ? `${sbd}.${sld}.${tld}` : `${sld}.${tld}`;
-        }
+        let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
+        rule = sbd && MatchPattern.#tlds.has(sld) ? `${sbd}.${sld}.${tld}` : `${sld}.${tld}`;
         MatchPattern.#caches.set(host, rule);
         return rule;
     }
     static test (host) {
-        return MatchPattern.#instances.some((that) => that.test(host));
+        return MatchPattern.#instances.some((that) => that.#proxy !== 'DIRECT' && that.test(host));
     }
     static delete (arg) {
         let removed = new Set(Array.isArray(arg) ? arg : [arg]);

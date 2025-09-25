@@ -74,14 +74,6 @@ class MatchPattern {
     static get caches () {
         return MatchPattern.#caches;
     }
-    static #storage;
-    static get storage () {
-        return MatchPattern.#storage;
-    }
-    static fetch () {
-        MatchPattern.#storage = new Storage('matchpattern', 'caches');
-        return MatchPattern.#storage.forEach(({key, value}) => MatchPattern.#caches.set(key, value));
-    }
     static make (host) {
         let rule = MatchPattern.#caches.get(host);
         if (rule) {
@@ -93,25 +85,18 @@ class MatchPattern {
             let [, sbd, sld, tld] = host.match(/(?:([^.]+)\.)?([^.]+)\.([^.]+)$/);
             rule = sbd && MatchPattern.#tlds.has(sld) ? `*.${sbd}.${sld}.${tld}` : `*.${sld}.${tld}`;
         }
-        MatchPattern.#storage?.set(host, rule);
         MatchPattern.#caches.set(host, rule);
         return rule;
+    }
+    static test (host) {
+        return MatchPattern.#instances.some((that) => that.test(host));
     }
     static delete (arg) {
         let removed = new Set(Array.isArray(arg) ? arg : [arg]);
         MatchPattern.#instances = MatchPattern.#instances.filter((that) => !removed.has(that.proxy));
     }
-    static combine () {
-        let text = [];
-        let pac = [];
-        MatchPattern.#instances.forEach((that) => {
-            if (that.#text && that.#pacScript) {
-                text.push(that.#text);
-                pac.push(that.#pacScript);
-            }
-        });
-        let regexp = text.length === 0 ? /!/ : new RegExp(`(${text.join('|')})`);
-        let pac_script = `function FindProxyForURL(url, host) {\n${pac.join('\n')}\n    return "DIRECT";\n}`;
-        return { regexp , pac_script };
+    static get pac_script () {
+        let pac = MatchPattern.#instances.map((that) => that.#pacScript).join('\n');
+        return `function FindProxyForURL(url, host) {${pac}\n    return "DIRECT";\n}`;
     }
 }

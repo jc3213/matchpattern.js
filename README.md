@@ -24,7 +24,7 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 
 ## Properties
 - [data](#data)
-- [pac_script](#pac_script)
+- [pacScript](#pacScript)
 
 ### data
 - `array`
@@ -33,11 +33,11 @@ match.proxy = 'SOCKS 127.0.0.1:1080';
 let { data } = match;
 ```
 
-### pac_script
+### pacScript
 - `string`
 - **read only**
 ```javascript
-let { pac_script } = match;
+let { pacScript } = match;
 ```
 
 ## Method
@@ -75,12 +75,19 @@ let result = match.test(string);
 
 ## Static Properties
 - [caches](#caches)
+- [pacScript](#pacScript-1)
 
 ### caches
 - `Map` instance
 - **readonly**
 ```javascript
 let { caches } = MatchPattern;
+```
+
+### pacScript
+- **read only**
+```javascript
+let { pacScript } = match;
 ```
 
 ## Static Method

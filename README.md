@@ -58,7 +58,6 @@ match.add(string | string[]);
 ```
 
 ### delete
-- require `0.4~`
 ```javascript
 match.delete(string | string[]);
 ```
@@ -78,13 +77,14 @@ let result = match.test(string);
 - [pacScript](#pacScript-1)
 
 ### caches
-- `Map` instance
+- `Map`
 - **readonly**
 ```javascript
 let { caches } = MatchPattern;
 ```
 
 ### pacScript
+- `string`
 - **read only**
 ```javascript
 let { pacScript } = match;
@@ -97,7 +97,7 @@ let { pacScript } = match;
 
 ### test
 ```javascript
-let result = MatchPattern.test(host);
+let result = MatchPattern.test(string);
 ```
 
 ### make

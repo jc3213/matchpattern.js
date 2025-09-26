@@ -17,7 +17,7 @@ class MatchPattern {
     get proxy () {
         return this.#proxy;
     }
-    get pac_script () {
+    get pacScript () {
         return `function FindProxyForURL(url, host) {\n${this.#pacScript}\n    return "DIRECT";\n}`;
     }
     new (arg) {
@@ -92,7 +92,7 @@ class MatchPattern {
         let removed = new Set(Array.isArray(arg) ? arg : [arg]);
         MatchPattern.#instances = MatchPattern.#instances.filter((that) => !removed.has(that.proxy));
     }
-    static get pac_script () {
+    static get pacScript () {
         let pac = MatchPattern.#instances.map((that) => that.#pacScript).join('\n');
         return `function FindProxyForURL(url, host) {${pac}\n    return "DIRECT";\n}`;
     }

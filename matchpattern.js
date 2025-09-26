@@ -22,15 +22,15 @@ class MatchPattern {
     }
     new (arg) {
         this.#data = new Set(Array.isArray(arg) ? arg : [arg]);
-        this.#update();
+        this.#build();
     }
     add (arg) {
         Array.isArray(arg) ? arg.forEach((i) => this.#data.add(i)) : this.#data.add(arg);
-        this.#update();
+        this.#build();
     }
     delete (arg) {
         Array.isArray(arg) ? arg.forEach((i) => this.#data.delete(i)) : this.#data.delete(arg);
-        this.#update();
+        this.#build();
     }
     clear () {
         this.#data.clear();
@@ -38,13 +38,7 @@ class MatchPattern {
         this.#regexp = /!/;
     }
     test (host) {
-        return this.#regexp.test(host);
-    }
-    #update () {
-        this.#regexp = this.#data.size === 0 ? /!/
-            : this.#data.has('*') ? /.*/
-            : new RegExp(`(^|\\.)(${this.data.map((i) => i.replace(/\./g, '\\.')).join('|')})$`);
-        this.#build();
+        return this.data.some((i) => i === host || host.endsWith(`.${i}`));
     }
     #build () {
         this.#pacScript = this.#data.size === 0 || this.#proxy === 'DIRECT' ? ''

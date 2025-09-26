@@ -116,13 +116,13 @@ MatchPattern.delete(string | string[]);
    - Matches `www.example.com`, `example.com`
    - Doesn't Match `test-example.com`, `www.example.com.cn`
 
-| Match Pattern ↓         | www.youtube.com | www.facebook.net | x.com | telegram.org |
-|-------------------------|-----------------|------------------|-------|--------------|
-| *                       | ✅              | ✅              | ✅   | ✅           |
-| youtube.com             | ✅              | ❌              | ❌   | ❌           |
-| facebook.com            | ❌              | ✅              | ❌   | ❌           |
-| x.com                   | ❌              | ❌              | ✅   | ❌           |
-| com                     | ✅              | ❌              | ✅   | ❌           |
-| org                     | ❌              | ❌              | ❌   | ✅           |
-| youtube                 | ❌              | ❌              | ❌   | ❌           |
-| telegram                | ❌              | ❌              | ❌   | ❌           |
+| Match Pattern ↓  | www.youtube.com | www.facebook.net | x.com | telegram.org |
+|------------------|-----------------|------------------|-------|--------------|
+| *                | ✅              | ✅              | ✅   | ✅           |
+| youtube.com      | ✅              | ❌              | ❌   | ❌           |
+| facebook.com     | ❌              | ✅              | ❌   | ❌           |
+| x.com            | ❌              | ❌              | ✅   | ❌           |
+| com              | ✅              | ❌              | ✅   | ❌           |
+| org              | ❌              | ❌              | ❌   | ✅           |
+| youtube          | ❌              | ❌              | ❌   | ❌           |
+| telegram         | ❌              | ❌              | ❌   | ❌           |

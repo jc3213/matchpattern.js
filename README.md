@@ -116,7 +116,13 @@ MatchPattern.delete(string | string[]);
    - Matches `www.example.com`, `example.com`
    - Doesn't Match `test-example.com`, `www.example.com.cn`
 
-| Match Pattern | Target Hostname |
-| :-: | :-: |
-| * | All hostnames |
-| www.university.org.eu <br> university.org.eu <br> org.eu <br> eu | www.university.org.eu |
+| Match Pattern ↓         | www.youtube.com | www.facebook.net | x.com | telegram.org |
+|-------------------------|-----------------|------------------|-------|--------------|
+| *                       | ✅              | ✅              | ✅   | ✅           |
+| youtube.com             | ✅              | ❌              | ❌   | ❌           |
+| facebook.com            | ❌              | ✅              | ❌   | ❌           |
+| x.com                   | ❌              | ❌              | ✅   | ❌           |
+| com                     | ✅              | ❌              | ✅   | ❌           |
+| org                     | ❌              | ❌              | ❌   | ✅           |
+| youtube                 | ❌              | ❌              | ❌   | ❌           |
+| telegram                | ❌              | ❌              | ❌   | ❌           |

@@ -7,7 +7,6 @@ class MatchPattern {
     version = '1.0';
     #data = new Set();
     #dataSet = [];
-    #empty = true;
     #global = false;
     get data () {
         return this.#dataSet;

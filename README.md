@@ -3,8 +3,8 @@
 ## Usage
 
 | Lastest |
-| - | - |
-| [matchpattern.js](https://jc3213.github.io/matchpattern.js/matchpattern.js)
+| - |
+| [matchpattern.js](https://jc3213.github.io/matchpattern.js/matchpattern.js) |
 
 ### HTML
 ```HTML
